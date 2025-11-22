@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@TeleOp(name="Basic: Iterative OpMode Practice", group="Iterative Opmode")
+@TeleOp(name="Advanced Tele", group="Iterative Opmode")
 public class AdvancedTele extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -31,10 +31,10 @@ public class AdvancedTele extends OpMode {
         // TODO: Initialize motors and servos here
         // Hint: Use hardwareMap.get() method
         // Example: frontLeft = hardwareMap.get(DcMotor.class, "front_left_motor");
-        frontLeft = hardwareMap.get(DcMotor.class, "fl");
-        frontRight = hardwareMap.get(DcMotor.class, "fr");
-        backLeft = hardwareMap.get(DcMotor.class, "bl");
-        backRight = hardwareMap.get(DcMotor.class, "br");
+        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
+        backRight = hardwareMap.get(DcMotor.class, "rightBack");
         ballSucker = hardwareMap.get(DcMotor.class, "intake");
 
         // TODO: Set motor directions and modes here.
