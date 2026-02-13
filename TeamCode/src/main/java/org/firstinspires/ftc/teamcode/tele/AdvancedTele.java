@@ -16,9 +16,10 @@ public class AdvancedTele extends OpMode {
 
     // TODO: Declare motors and servos here
     // Example: private DcMotor frontLeft;
-    private DcMotor frontLeft, frontRight, backLeft, backRight, ballSucker;
+    private DcMotor frontLeft, frontRight, backLeft, backRight, ballSucker, midtake, outtake1, outtake2;
 
     boolean firstPressGamepadA = true;
+    boolean mid = true;
     double ballSuckerPower = 0;
 
     // TODO: Set any constant values here, if necessary
@@ -31,11 +32,15 @@ public class AdvancedTele extends OpMode {
         // TODO: Initialize motors and servos here
         // Hint: Use hardwareMap.get() method
         // Example: frontLeft = hardwareMap.get(DcMotor.class, "front_left_motor");
-        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
-        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
-        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
-        backRight = hardwareMap.get(DcMotor.class, "rightBack");
-        ballSucker = hardwareMap.get(DcMotor.class, "intake");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        ballSucker = hardwareMap.get(DcMotor.class, "ballsucker");
+        midtake = hardwareMap.get(DcMotor.class, "midtake");
+        outtake1 = hardwareMap.get(DcMotor.class, "push");
+        outtake2 = hardwareMap.get(DcMotor.class, "pushSmallWheels");
+
 
         // TODO: Set motor directions and modes here.
         // Hint: You'll have to reverse some motors to drive straight -- you can figure out which ones through trial and error!
@@ -45,12 +50,20 @@ public class AdvancedTele extends OpMode {
         backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         ballSucker.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        midtake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtake1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtake2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         ballSucker.setDirection(DcMotor.Direction.REVERSE);
+        midtake.setDirection(DcMotor.Direction.REVERSE); // SPINS COUNTER CLOCKWISE
+        outtake1.setDirection(DcMotor.Direction.FORWARD); //not fully sure about direction yet
+        outtake2.setDirection(DcMotor.Direction.REVERSE); //not fully sure about direction yet either
+
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -99,6 +112,23 @@ public class AdvancedTele extends OpMode {
         if (!gamepad1.a) {
             firstPressGamepadA = true;
         }
+
+
+        if(gamepad2.a){
+            if(mid){
+                midtake.setPower(0.90);
+                outtake1.setPower(0.90);
+            }else {
+                midtake.setPower(0);
+                outtake1.setPower(0);
+            }
+           mid = false;
+        }
+
+        if(gamepad2.a){
+            mid = true;
+        }
+
 
         // TODO: Set the calculated power to the motors
         // Hint: Use setPower() method on each motor
