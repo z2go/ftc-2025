@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.tele;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.ArrayList;
@@ -18,9 +21,15 @@ public class AdvancedTele extends OpMode {
     // Example: private DcMotor frontLeft;
     private DcMotor frontLeft, frontRight, backLeft, backRight, ballSucker, midtake, outtake1, outtake2;
 
+    private Servo helper;
     boolean firstPressGamepadA = true;
     boolean mid = true;
     double ballSuckerPower = 0;
+    double midTakePower = 0;
+    double outtake1power = 0;
+    double outtake2power = 0;
+    boolean lastUp = false;
+    boolean lastDown = false;
 
     // TODO: Set any constant values here, if necessary
     // Example: private final double MAX_POWER = 1.0;
@@ -32,14 +41,16 @@ public class AdvancedTele extends OpMode {
         // TODO: Initialize motors and servos here
         // Hint: Use hardwareMap.get() method
         // Example: frontLeft = hardwareMap.get(DcMotor.class, "front_left_motor");
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRight = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeft = hardwareMap.get(DcMotor.class, "leftBack");
+        backRight = hardwareMap.get(DcMotor.class, "rightBack");
         ballSucker = hardwareMap.get(DcMotor.class, "ballsucker");
         midtake = hardwareMap.get(DcMotor.class, "midtake");
         outtake1 = hardwareMap.get(DcMotor.class, "push");
         outtake2 = hardwareMap.get(DcMotor.class, "pushSmallWheels");
+        helper = hardwareMap.get(Servo.class, "helper");
+
 
 
         // TODO: Set motor directions and modes here.
@@ -98,37 +109,41 @@ public class AdvancedTele extends OpMode {
         double backRightPower = drive + turn - strafe;
 
 
-        if (gamepad1.a) {
+        if (gamepad1.left_bumper) {
             if (firstPressGamepadA) {
                 if (ballSuckerPower == 0) {
                     ballSuckerPower = 1;
+                    midTakePower = 1;
                 } else {
                     ballSuckerPower = 0;
+                    midTakePower = 0;
                 }
             }
             firstPressGamepadA = false;
         }
 
-        if (!gamepad1.a) {
+        if (!gamepad1.left_bumper) {
             firstPressGamepadA = true;
         }
 
-
-        if(gamepad2.a){
-            if(mid){
-                midtake.setPower(0.90);
-                outtake1.setPower(0.90);
-            }else {
-                midtake.setPower(0);
-                outtake1.setPower(0);
-            }
-           mid = false;
+        if(gamepad1.dpad_up && !lastUp){
+            outtake1power += 0.05;
+            outtake2power += 0.05;
         }
-
-        if(gamepad2.a){
-            mid = true;
+        if(gamepad1.dpad_down && outtake1power > 0 && !lastDown) {
+            outtake1power -= 0.05;
+            outtake2power -= 0.05;
         }
+        lastDown = gamepad1.dpad_down;
+        lastUp = gamepad1.dpad_up;
 
+        telemetry.addData("Power: ",outtake1power);
+        if (gamepad1.right_bumper) {
+            helper.setPosition(0);
+        }
+        else {
+            helper.setPosition(0.4);
+        }
 
         // TODO: Set the calculated power to the motors
         // Hint: Use setPower() method on each motor
@@ -137,14 +152,10 @@ public class AdvancedTele extends OpMode {
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
         ballSucker.setPower(ballSuckerPower);
+        midtake.setPower(midTakePower);
+        outtake1.setPower(outtake1power);
+        outtake2.setPower(outtake2power);
 
-        telemetry.addData("Status", "Running for: " + runtime.toString());
-        telemetry.addData("FL power", frontLeft.getPower());
-        telemetry.addData("FR power", frontRight.getPower());
-        telemetry.addData("BL power", backLeft.getPower());
-        telemetry.addData("BR power", backRight.getPower());
-        telemetry.addData("Intake power", ballSuckerPower);
-        // Example: telemetry.addData("Motor Power", frontLeft.getPower());
     }
 
     @Override
