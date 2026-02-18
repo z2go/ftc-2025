@@ -26,7 +26,7 @@ public class AdvancedTele extends OpMode {
 
     boolean lastRight = false;
 
-    double cannonPower = 0.8;
+    double cannonPower = 0.5;
     // TODO: Set any constant values here, if necessary
     // Example: private final double MAX_POWER = 1.0;
 
@@ -112,10 +112,10 @@ public class AdvancedTele extends OpMode {
         }
 
         if (!lastUp && gamepad1.dpad_up){
-            cannonPower+=0.01;
+            cannonPower+=0.1;
         }
         if(!lastDown && gamepad1.dpad_down){
-            cannonPower-=0.01;
+            cannonPower-=0.1;
         }
         outtake1.setPower(cannonPower);
         outtake2.setPower(cannonPower);
@@ -139,6 +139,7 @@ public class AdvancedTele extends OpMode {
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
         ballSucker.setPower(ballSuckerPower);
+        midtake.setPower(ballSuckerPower);
 
         //telemetry.addData("Status", "Running for: " + runtime.toString());
         //telemetry.addData("FL power", frontLeft.getPower());

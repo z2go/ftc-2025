@@ -22,7 +22,7 @@ public class AprilTagLimelightTest extends OpMode{
 
     //IN INCHES AND DEGREES
     private double LLheight = 12; //HEIGHT OF THE LIMELIGHT ON THE ROBOT
-    private double TargetHeight = 24; //HEIGHT OF THE TARGET
+    private double TargetHeight = 29.5; //HEIGHT OF THE TARGET
     private double LLAngle = 10; //Angle that the limelight is mounted at
     private double convertToDegrees = 3.14159/180.0;
 

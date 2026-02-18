@@ -9,11 +9,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.*;
 
 class Intake {
-    private DcMotor motor;
+    private DcMotor intake;
+    private DcMotor midtake;
 
     public Intake(HardwareMap hardwareMap) {
-        motor = hardwareMap.get(DcMotor.class, "intake");
-        motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        intake = hardwareMap.get(DcMotor.class, "ballsucker");
+        midtake = hardwareMap.get(DcMotor.class, "midtake");
+
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
+        midtake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public Action spinUp() {
@@ -24,10 +28,26 @@ class Intake {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    motor.setPower(0.8);
+                    intake.setPower(1);
+                    midtake.setPower(1);
                     initialized = true;
                 }
+                return true;
+            }
+        };
+    }
+    public Action stop() {
+        return new Action() {
 
+            private boolean initialized = false;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized) {
+                    intake.setPower(0);
+                    midtake.setPower(0);
+                    initialized = true;
+                }
                 return true;
             }
         };
