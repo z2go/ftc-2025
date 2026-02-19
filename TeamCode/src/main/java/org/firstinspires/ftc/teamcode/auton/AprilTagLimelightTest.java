@@ -21,8 +21,13 @@ public class AprilTagLimelightTest extends OpMode{
     private double alpha;
 
     //IN INCHES AND DEGREES
+<<<<<<< HEAD
     private double LLheight = 12; //HEIGHT OF THE LIMELIGHT ON THE ROBOT
     private double TargetHeight = 29.5; //HEIGHT OF THE TARGET
+=======
+    private double LLheight = 20; //HEIGHT OF THE LIMELIGHT ON THE ROBOT
+    private double TargetHeight = 32; //HEIGHT OF THE TARGET
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
     private double LLAngle = 10; //Angle that the limelight is mounted at
     private double convertToDegrees = 3.14159/180.0;
 
@@ -31,7 +36,11 @@ public class AprilTagLimelightTest extends OpMode{
     public void init(){
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         //pick the lime light pipeline needed for this alliance
+<<<<<<< HEAD
         limelight.pipelineSwitch(0);
+=======
+        limelight.pipelineSwitch(8);
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
         imu = hardwareMap.get(IMU.class, "imu");
         RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
@@ -55,6 +64,7 @@ public class AprilTagLimelightTest extends OpMode{
             telemetry.addData("Ty", llresult.getTy());
             telemetry.addData("Ta", llresult.getTa());
 
+<<<<<<< HEAD
 
             double x = botPose.getPosition().x;
             double y = botPose.getPosition().y;
@@ -64,6 +74,13 @@ public class AprilTagLimelightTest extends OpMode{
             double distance = Math.hypot(x, y);
 
             telemetry.addData("Tag Distance", distance);
+=======
+            // calculating distance to the target:
+            alpha = llresult.getTy();
+            distanceT = (TargetHeight - LLheight)/tan((alpha + LLAngle*convertToDegrees));
+            telemetry.addData("Distance to Target", distanceT);
+
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
 
         }
     }

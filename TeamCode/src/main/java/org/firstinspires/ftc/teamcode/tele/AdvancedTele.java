@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.tele;
 
+import static java.lang.Thread.sleep;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,9 +20,20 @@ public class AdvancedTele extends OpMode {
     // TODO: Declare motors and servos here
     // Example: private DcMotor frontLeft;
     private DcMotor frontLeft, frontRight, backLeft, backRight, ballSucker, midtake, outtake1, outtake2;
+<<<<<<< HEAD
     private Servo helper;
     boolean helped = true;
     double ballSuckerPower = 0;
+=======
+
+    private Servo helper;
+    boolean firstPressGamepadA = true;
+    boolean mid = true;
+    double ballSuckerPower = 0;
+    double midTakePower = 0;
+    double outtake1power = 0;
+    double outtake2power = 0;
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
     boolean lastUp = false;
     boolean lastDown = false;
 
@@ -47,6 +60,8 @@ public class AdvancedTele extends OpMode {
         midtake = hardwareMap.get(DcMotor.class, "midtake");
         outtake1 = hardwareMap.get(DcMotor.class, "push");
         outtake2 = hardwareMap.get(DcMotor.class, "pushSmallWheels");
+        helper = hardwareMap.get(Servo.class, "helper");
+
 
 
         // TODO: Set motor directions and modes here.
@@ -104,6 +119,7 @@ public class AdvancedTele extends OpMode {
         double frontRightPower = drive + turn + strafe;
         double backRightPower = drive + turn - strafe;
 
+<<<<<<< HEAD
         if(gamepad1.left_bumper){
             ballSuckerPower = 1;
         }
@@ -130,7 +146,44 @@ public class AdvancedTele extends OpMode {
         lastUp = gamepad1.dpad_up;
         lastRight = gamepad1.right_bumper;
 
+=======
 
+        if (gamepad1.left_bumper) {
+            if (firstPressGamepadA) {
+                if (ballSuckerPower == 0) {
+                    ballSuckerPower = 1;
+                    midTakePower = 1;
+                } else {
+                    ballSuckerPower = 0;
+                    midTakePower = 0;
+                }
+            }
+            firstPressGamepadA = false;
+        }
+
+        if (!gamepad1.left_bumper) {
+            firstPressGamepadA = true;
+        }
+
+        if(gamepad1.dpad_up && !lastUp){
+            outtake1power += 0.05;
+            outtake2power += 0.05;
+        }
+        if(gamepad1.dpad_down && outtake1power > 0 && !lastDown) {
+            outtake1power -= 0.05;
+            outtake2power -= 0.05;
+        }
+        lastDown = gamepad1.dpad_down;
+        lastUp = gamepad1.dpad_up;
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
+
+        telemetry.addData("Power: ",outtake1power);
+        if (gamepad1.right_bumper) {
+            helper.setPosition(0);
+        }
+        else {
+            helper.setPosition(0.4);
+        }
 
         // TODO: Set the calculated power to the motors
         // Hint: Use setPower() method on each motor
@@ -139,6 +192,7 @@ public class AdvancedTele extends OpMode {
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
         ballSucker.setPower(ballSuckerPower);
+<<<<<<< HEAD
         midtake.setPower(ballSuckerPower);
 
         //telemetry.addData("Status", "Running for: " + runtime.toString());
@@ -149,6 +203,12 @@ public class AdvancedTele extends OpMode {
         //telemetry.addData("Intake power", ballSuckerPower);
         // Example: telemetry.addData("Motor Power", frontLeft.getPower());
         telemetry.addData("Power: ",cannonPower);
+=======
+        midtake.setPower(midTakePower);
+        outtake1.setPower(outtake1power);
+        outtake2.setPower(outtake2power);
+
+>>>>>>> b0edf561cda5997b00a252cf514c42b80e1cb067
     }
 
     @Override
